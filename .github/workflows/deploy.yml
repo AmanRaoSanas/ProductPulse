@@ -32,13 +32,14 @@ jobs:
 
       - name: Package Lambda
         run: |
-          cd app
-          rm -rf lambda_package.zip
+          rm -rf infra/lambda_package.zip package
           mkdir -p package
-          pip install --target package -r requirements.txt
-          cp -r . package/
+          pip install --target package -r app/requirements.txt
+          rsync -av --exclude='.*' app/ package/
           cd package
-          zip -r9 ../../infra/lambda_package.zip .
+          zip -r ../infra/lambda_package.zip .
+          cd ..
+          rm -rf package
         shell: bash
         working-directory: .
 
