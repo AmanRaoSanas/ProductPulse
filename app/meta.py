@@ -1,27 +1,8 @@
 import boto3
-from botocore.exceptions import ClientError
-from app.config import logger, AWS_REGION
+from app.config import logger, AWS_REGION, DYNAMODB_TABLE
 
-dynamodb = boto3.resource("dynamodb", region_name = AWS_REGION)
-TABLE_NAME = "TelemetryMetadata"
-
-def init_table():
-    try:
-        table = dynamodb.create_table(
-            TableName=TABLE_NAME,
-            KeySchema=[{"AttributeName":"device_id", "KeyType":"HASH"}],
-            AttributeDefinitions=[{"AttributeName": "device_id", "AttributeType": "S"}],
-            BillingMode="PAY_PER_REQUEST",
-        )
-        table.wait_until_exists()
-        logger.info(f"DynamoDB table {TABLE_NAME} created successfully")
-
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'ResourceInUseException':
-            logger.info(f"DynamoDB table {TABLE_NAME} already exists")
-        else:
-            logger.error(f"Error occurred while creating dynamodb table {e}")
-            raise
+dynamodb = boto3.resource("dynamodb", region_name=AWS_REGION)
+TABLE_NAME = DYNAMODB_TABLE  # Table is created by terraform
 
 def update_metadata(device_id: str, last_timestamp: str):
     try:
@@ -32,4 +13,4 @@ def update_metadata(device_id: str, last_timestamp: str):
         })
         logger.info(f"Metadata updated for device: {device_id}")
     except Exception as e:
-        logger.error(f"Metadat update failed {e}")
+        logger.error(f"Metadata update failed: {e}")
