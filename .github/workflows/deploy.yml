@@ -28,18 +28,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-        working-directory: ./app
+        working-directory: .
 
       - name: Package Lambda
         run: |
           cd app
-          rm -f ../infra/lambda_package.zip
+          rm -rf lambda_package.zip
           mkdir -p package
-          pip install --target package -r ../requirements.txt
+          pip install --target package -r requirements.txt
           cp -r . package/
           cd package
           zip -r9 ../../infra/lambda_package.zip .
         shell: bash
+        working-directory: .
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
