@@ -6,8 +6,8 @@ resource "aws_lambda_function" "telemetry_lambda" {
   runtime = var.lambda_runtime
   timeout = var.lambda_timeout
 
-  filename = "lambda_package.zip"
-  source_code_hash = filebase64sha256("lambda_package.zip")
+  filename         = "${path.module}/lambda_package.zip"
+  source_code_hash = filebase64sha256("${path.module}/lambda_package.zip")
 
   environment {
     variables = {
@@ -18,4 +18,3 @@ resource "aws_lambda_function" "telemetry_lambda" {
     }
   }
 }
-
