@@ -1,23 +1,25 @@
-import redis.asyncio as redis
-from app.config import logger, REDIS_HOST, REDIS_PORT
+import boto3
+import time
+from app.config import AWS_REGION, DYNAMODB_CACHE_TABLE, logger
 
-redis_client = None
-
-async def init_redis():
-    global redis_client
-    redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
-    logger.info("Redis cache initialized successfully.")
+dynamodb = boto3.resource("dynamodb", region_name=AWS_REGION)
+cache_table = dynamodb.Table(DYNAMODB_CACHE_TABLE)
 
 async def set_cache(key: str, value: str, expire: int = 300):
     try:
-        await redis_client.set(name=key, value=value, ex=expire)
-        logger.info("cache set successfully")
+        ttl = int(time.time())+expire
+        cache_table.put_item(Item={
+            "cache_key": key,
+            "cache_value": value,
+            "ttl_timestamp": ttl
+        })
+        logger.info("Cache stored successfully")
     except Exception as e:
-        logger.error(f"Redis set cache encountered error {e}")
+        logger.error(f"Cache set error {e}")
 
-async def get_cache(key: str):
+async def get_cache(key:str):
     try:
-        return await redis_client.get(key)
+        result = cache_table.get_item(Key={"cache_key":key})
+        return result.get("Item", {}).get("cache_value")
     except Exception as e:
-        logger.error(f"Redis get cache encountered error {e}")
-        return None
+        logger.error(f"Cache get error {e}")

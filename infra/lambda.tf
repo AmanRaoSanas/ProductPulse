@@ -14,6 +14,7 @@ resource "aws_lambda_function" "telemetry_lambda" {
       BUCKET_NAME = var.raw_bucket
       DYNAMODB_TABLE = var.dynamodb_metadata_table
       AWS_REGION = var.aws_region
+      DYNAMODB_CACHE_TABLE = var.dynamodb_cache_table
     }
   }
 }

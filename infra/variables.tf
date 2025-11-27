@@ -34,3 +34,8 @@ variable "lambda_runtime" {
 variable "lambda_timeout" {
   default = 60
 }
+
+variable "dynamodb_cache_table" {
+  description = "DynamoDB table for cache storage"
+  type        = string
+}
