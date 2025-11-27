@@ -11,6 +11,6 @@ MOCK_S3 = os.getenv("MOCK_S3", "True") == "True"  # set true only for local mock
 
 logging.basicConfig(
     level=logging.INFO,
-    format= "%(asctime)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger("productpulse")

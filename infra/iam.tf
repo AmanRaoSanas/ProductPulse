@@ -46,7 +46,8 @@ resource "aws_iam_policy" "lambda_s3_dynamodb_policy" {
           "dynamodb:UpdateItem",
           "dynamodb:GetItem"
         ]
-        Resource = aws_dynamodb_table.device_metadata.arn
+        Resource =[aws_dynamodb_table.device_metadata.arn,
+                   aws_dynamodb_table.telemetry_cache.arn]
       }
     ]
   })

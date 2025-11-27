@@ -2,8 +2,8 @@ from fastapi import FastAPI, HTTPException
 from mangum import Mangum
 from app.models import Telemetry
 from app.s3_utils import upload_telemetry
-from app.cache import init_redis, set_cache, get_cache
-from app.meta import init_table, update_metadata
+from app.cache import set_cache
+from app.meta import update_metadata
 from app.config import logger
 import json
 
@@ -13,15 +13,10 @@ app = FastAPI(title="ProductPulse")
 async def root():
     return {"message": "ProductPulse Phase 1 Backend is Running"}
 
-@app.on_event("startup")
-async def startup():
-    await init_redis()
-    init_table()
-
 @app.post("/telemetry")
 async def telemetry_ingestion(data:Telemetry):
     try:
-        logger.info(f"Telemetry data recieved: {data}")
+        logger.info(f"Telemetry data received: {data}")
 
         # actual data
         await upload_telemetry(data)
