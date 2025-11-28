@@ -12,7 +12,8 @@ resource "aws_lambda_function" "telemetry_lambda" {
   environment {
     variables = {
       BUCKET_NAME = var.raw_bucket
-      DYNAMODB_TABLE = var.dynamodb_metadata_table
+      DYNAMODB_METADATA_TABLE = var.dynamodb_metadata_table
+      DYNAMODB_CACHE_TABLE = var.dynamodb_cache_table
     }
   }
 }

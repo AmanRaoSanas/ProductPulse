@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from mangum import Mangum
-from app.models import Telemetry
-from app.s3_utils import upload_telemetry
-from app.cache import set_cache
-from app.meta import update_metadata
-from app.config import logger
+from models import Telemetry
+from s3_utils import upload_telemetry
+from cache import set_cache
+from meta import update_metadata
+from config import logger
 import json
 
 app = FastAPI(title="ProductPulse")
