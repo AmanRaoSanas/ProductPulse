@@ -17,3 +17,8 @@ output "telemetry_cache_table" {
   value       = aws_dynamodb_table.telemetry_cache.name
   description = "DynamoDB table for caching telemetry"
 }
+
+output "api_gateway_url" {
+  value       = aws_apigatewayv2_stage.prod.invoke_url
+  description = "HTTP API Gateway URL for FastAPI endpoints"
+}
