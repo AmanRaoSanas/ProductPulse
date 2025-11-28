@@ -69,7 +69,8 @@ jobs:
             -var="lambda_handler=${{ secrets.TF_VAR_LAMBDA_HANDLER }}" \
             -var="lambda_runtime=${{ secrets.TF_VAR_LAMBDA_RUNTIME }}" \
             -var="lambda_timeout=${{ secrets.TF_VAR_LAMBDA_TIMEOUT }}" \
-            -out=tfplan
+            -out=tfplan \
+            -lock-timeout=10m
         working-directory: ./infra
 
       - name: Terraform Apply
