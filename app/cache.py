@@ -1,6 +1,6 @@
 import boto3
 import time
-from app.config import AWS_REGION, DYNAMODB_CACHE_TABLE, logger
+from config import AWS_REGION, DYNAMODB_CACHE_TABLE, logger
 
 dynamodb = boto3.resource("dynamodb", region_name=AWS_REGION)
 cache_table = dynamodb.Table(DYNAMODB_CACHE_TABLE)
