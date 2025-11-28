@@ -7,7 +7,7 @@ from meta import update_metadata
 from config import logger
 import json
 
-app = FastAPI(title="ProductPulse")
+app = FastAPI(title="ProductPulse", root_path="/prod")
 
 @app.get("/")
 async def root():
